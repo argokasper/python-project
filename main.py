@@ -1,34 +1,53 @@
-from tkinter import ttk
-from tkinter import Tk, Frame, Label
+from tkinter.ttk import Notebook
+from tkinter import Tk
 
-window = Tk()
-window.title('New Project')
+from tab_main import MainTab
+from tab_about import AboutTab
 
-window.iconbitmap('./mario.ico') # pilt peab .ico formaadis
+class App(Tk):
+    def __init__(self):
+        super().__init__()
 
-window.geometry('640x480')
+        # Nüüd hakkame lisama aknale pealkirju ja ikoone
+        # jm rakendust iseloomustavaid omadusi
+        self.title('Minu Programm')
+        self.iconbitmap('./mario.ico') # pilt peab .ico formaadis
+        self.geometry('640x480')
 
-
-# põhi kood
-tabs_group = ttk.Notebook(window)
-tabs_group.pack(fill='both', expand=1)
-
-# Loome tabid
-main_tab = Frame(tabs_group)
-main_tab.pack()
-
-about_tab = Frame(tabs_group)
-about_tab.pack()
-
-# Lisame tabid tabide gruppi
-tabs_group.add(main_tab, text="Main")
-tabs_group.add(about_tab, text="About Us")
+        # Joonistame tab'ide grupi
+        self.draw_tabs()
 
 
-# Loome tabidele sisu
-# Main
-Label(main_tab, text="Siin on põhiline info").grid(
-    column=0, row=0, padx=20, pady=20)
+    def draw_tabs(self):
+        # Loome tabide grupi
+        tabs_group = Notebook(self)
+        tabs_group.pack(fill='both', expand=1)
+
+        #---------MAIN TAB---------
+        # Loome main tab'i
+        main_tab = MainTab()
+        main_tab.drawTab()
+
+        # Lisame loodud tab'i gruppi
+        tabs_group.add(main_tab, text='Main')
+        #--------MAIN TAB lõpp-------
+
+        #---------ABOUT TAB---------
+        # Loome main tab'i
+        about_tab = AboutTab()
+        about_tab.drawTab()
+
+        # Lisame loodud tab'i gruppi
+        tabs_group.add(about_tab, text='About')
+        #--------ABOUT TAB lõpp-------
+
+        # Siia võib juurde lisada uusi tab'e
+        # analoogselt MainTab'ile ja AboutTab'ile
 
 
-window.mainloop()
+
+# Järgnev if lause kontrollib kas antud fail kutsutakse otse välja
+# rohkem infot siin: https://www.geeksforgeeks.org/what-does-the-if-__name__-__main__-do/
+if __name__ == '__main__':
+    app = App()
+    app.mainloop()
