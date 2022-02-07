@@ -29,7 +29,7 @@ class App(Tk):
         main_tab.drawTab()
 
         # Lisame loodud tab'i gruppi
-        tabs_group.add(main_tab, text='Main')
+        tabs_group.add(main_tab, text='New main')
         #--------MAIN TAB lõpp-------
 
         #---------ABOUT TAB---------
@@ -38,7 +38,7 @@ class App(Tk):
         about_tab.drawTab()
 
         # Lisame loodud tab'i gruppi
-        tabs_group.add(about_tab, text='About')
+        tabs_group.add(about_tab, text='Something else')
         #--------ABOUT TAB lõpp-------
 
         # Siia võib juurde lisada uusi tab'e
