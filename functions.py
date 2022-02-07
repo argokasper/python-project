@@ -22,6 +22,14 @@ def write_file(file_name, line):
 
 
 def write_to_csv(file_name, data, delimiter = ','):
+    """Writes one line into a CSV file. Default delimiter is comma(,).
+
+    Args:
+        file_name (str): Path to a CSV file. It is created if it doesn't exist
+        data (dict): Key-value data for inserting 1 row into a file
+        delimiter (str, optional): CSV file data delimiter. Defaults to ','.
+    """
+
     line = ''
     data_count = len(data)
     for index, (key, value) in enumerate(data.items()):
@@ -34,6 +42,15 @@ def write_to_csv(file_name, data, delimiter = ','):
     write_file(file_name, line)
 
 def read_csv(file_name, delimiter = ','):
+    """Reads a CSV file and exports its data into a dictionary list.
+
+    Args:
+        file_name (str): Path to a CSV file
+        delimiter (str, optional): CSV file data delimiter. Defaults to ','.
+
+    Returns:
+        list: [description]
+    """
     lines = read_file(file_name) # list, kus iga element on üks rida ja rida on komaga eraldatud data
 
     #dict koosneb: name, text, ......

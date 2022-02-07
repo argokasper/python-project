@@ -2,13 +2,16 @@ from tkinter import Frame, StringVar
 from tkinter.ttk import Style, Label, Entry, Button
 
 from components.ScrollableFrame import ScrollableFrame
+from components.Table import Table
 
 import functions
 
 class AboutTab(Frame):
     text_input = None
     file_contents = ''
-    text_file = None
+    # text_file = None
+
+    data_table = None
 
     def __init__(self):
         super().__init__()
@@ -44,15 +47,18 @@ class AboutTab(Frame):
         button = Button(self, text="Salvesta faili", cursor="hand2", command=self.save_to_file)
         button.pack()
 
-        self.file_contents = StringVar()
-        self.append_to_textfile_content()
+        # self.file_contents = StringVar()
+        # self.append_to_textfile_content()
 
-        scrollable_area = ScrollableFrame(self)
-        scrollable_area.pack()
-        self.scrollable_area = scrollable_area
+        # scrollable_area = ScrollableFrame(self)
+        # scrollable_area.pack()
+        # self.scrollable_area = scrollable_area
 
-        self.text_file = Label(self.scrollable_area, background="green", textvariable=self.file_contents)
-        self.text_file.pack()
+        # self.text_file = Label(self.scrollable_area, background="green", textvariable=self.file_contents)
+        # self.text_file.pack()
+        file_data = functions.read_csv('log.csv')
+        self.data_table = Table(self, data = file_data, headers = ['Nimi', 'Sõnum'])
+        self.data_table.pack()
 
     def save_to_file(self):
         text = self.text_input.get()
@@ -61,11 +67,14 @@ class AboutTab(Frame):
         content = { 'name': name, 'text': text }
 
         functions.write_to_csv('log.csv', content)
-        print(functions.read_csv('log.csv')) # prindime csv listi välja
+        data = functions.read_csv('log.csv')
+        self.data_table.update(data)
+
         # self.append_to_textfile_content()
 
     def append_to_textfile_content(self):
         text = functions.read_file('log.txt')
         self.file_contents.set("".join(text))
+
 
 
