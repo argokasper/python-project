@@ -1,15 +1,24 @@
 
 # 1. liige tiimis
 def read_file(file_name):
-    file = open(file_name, 'r')
-    file_lines = file.readlines()
-    file.close()
+    try:
+        file = open(file_name, 'r')
+        file_lines = file.readlines()
+        file.close()
 
-    return file_lines
+        return file_lines
+    except FileNotFoundError:
+        return []
 
 
 # 2. liige tiimis
 def write_file(file_name, line):
+    """Kirjutab midagi faili
+
+    Args:
+        file_name (str): [description]
+        line (str): [description]
+    """
     try:
         file = open(file_name, 'x') # x = uue faili loomine
     except:
@@ -42,7 +51,7 @@ def write_to_csv(file_name, data, delimiter = ','):
     write_file(file_name, line)
 
 def read_csv(file_name, delimiter = ','):
-    """Reads a CSV file and exports its data into a dictionary list.
+    """Reads a CSV file and exports its data into a dictionary list TERE.
 
     Args:
         file_name (str): Path to a CSV file
@@ -62,8 +71,7 @@ def read_csv(file_name, delimiter = ','):
         tmp_phrase = ''
         tmp_data = {'name': '', 'text': ''}
         data_counter = 0
-        line_length = len(line)
-        for index, letter in enumerate(line):
+        for letter in line:
             # print(letter)
             if open_quotes == False and letter == '"': # if letter == "\"": /- ei tohi
                 open_quotes = True

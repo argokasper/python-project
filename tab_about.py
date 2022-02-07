@@ -1,7 +1,6 @@
 from tkinter import Frame, StringVar
 from tkinter.ttk import Style, Label, Entry, Button
 
-from components.ScrollableFrame import ScrollableFrame
 from components.Table import Table
 
 import functions
@@ -12,6 +11,7 @@ class AboutTab(Frame):
     # text_file = None
 
     data_table = None
+    data_file_name = 'messages.csv'
 
     def __init__(self):
         super().__init__()
@@ -47,17 +47,13 @@ class AboutTab(Frame):
         button = Button(self, text="Salvesta faili", cursor="hand2", command=self.save_to_file)
         button.pack()
 
-        # self.file_contents = StringVar()
-        # self.append_to_textfile_content()
+        self.input_value = StringVar()
+        self.input_value.trace_add('write', self.on_input)
+        self.filter_input = Entry(self, textvariable=self.input_value)
+        self.filter_input.pack()
 
-        # scrollable_area = ScrollableFrame(self)
-        # scrollable_area.pack()
-        # self.scrollable_area = scrollable_area
-
-        # self.text_file = Label(self.scrollable_area, background="green", textvariable=self.file_contents)
-        # self.text_file.pack()
-        file_data = functions.read_csv('log.csv')
-        self.data_table = Table(self, data = file_data, headers = ['Nimi', 'Sõnum'])
+        self.messages = self.original_messages = functions.read_csv(self.data_file_name)
+        self.data_table = Table(self, data = self.messages, headers = ['Nimi', 'Sõnum'])
         self.data_table.pack()
 
     def save_to_file(self):
@@ -66,15 +62,32 @@ class AboutTab(Frame):
 
         content = { 'name': name, 'text': text }
 
-        functions.write_to_csv('log.csv', content)
-        data = functions.read_csv('log.csv')
-        self.data_table.update(data)
-
-        # self.append_to_textfile_content()
+        functions.write_to_csv(self.data_file_name, content)
+        self.original_messages = functions.read_csv(self.data_file_name) # kirjuta alati värske faili sisu original_messages muutujasse
+        self.data_table.append_row(content)
 
     def append_to_textfile_content(self):
         text = functions.read_file('log.txt')
         self.file_contents.set("".join(text))
+
+    def on_input(self, *args):
+        term = self.input_value.get()
+        self.filter_scores(term)
+        self.data_table.update(self.messages)
+
+    def filter_scores(self, search):
+        if search == '':
+            self.messages = self.original_messages
+        else:
+            if len(self.messages) == 0:
+                self.messages = self.original_messages
+
+            filtered_scores = list(filter(self.filter, self.messages))
+            self.messages = filtered_scores
+
+    def filter(self, score_line):
+        search = self.input_value.get()
+        return search.lower() in score_line['name'].lower() or search.lower() in score_line['text'].lower()
 
 
 
