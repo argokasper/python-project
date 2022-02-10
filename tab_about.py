@@ -52,30 +52,26 @@ class AboutTab(Frame):
         self.filter_input = Entry(self, textvariable=self.input_value)
         self.filter_input.pack()
 
-        self.messages = self.original_messages = functions.read_csv(self.data_file_name)
-        self.data_table = Table(self, data = self.messages, headers = ['Nimi', 'Sõnum'])
+        self.messages = self.original_messages = functions.read_csv(self.data_file_name, True)
+        self.data_table = Table(self, data = self.messages, headers = {'name': 'Nimi', 'message': 'Sõnum'})
         self.data_table.pack()
 
     def save_to_file(self):
         text = self.text_input.get()
         name = self.name_input.get()
 
-        content = { 'name': name, 'text': text }
+        content = { 'name': name, 'message': text }
 
-        functions.write_to_csv(self.data_file_name, content)
-        self.original_messages = functions.read_csv(self.data_file_name) # kirjuta alati värske faili sisu original_messages muutujasse
+        functions.write_to_csv(self.data_file_name, content, ['name', 'message'])
+        self.original_messages = functions.read_csv(self.data_file_name, True) # kirjuta alati värske faili sisu original_messages muutujasse
         self.data_table.append_row(content)
-
-    def append_to_textfile_content(self):
-        text = functions.read_file('log.txt')
-        self.file_contents.set("".join(text))
 
     def on_input(self, *args):
         term = self.input_value.get()
         self.filter_scores(term)
         self.data_table.update(self.messages)
 
-    def filter_scores(self, search):
+    def filter_scores(self, search: str):
         if search == '':
             self.messages = self.original_messages
         else:
@@ -85,9 +81,9 @@ class AboutTab(Frame):
             filtered_scores = list(filter(self.filter, self.messages))
             self.messages = filtered_scores
 
-    def filter(self, score_line):
+    def filter(self, score_line: dict):
         search = self.input_value.get()
-        return search.lower() in score_line['name'].lower() or search.lower() in score_line['text'].lower()
+        return search.lower() in score_line['name'].lower() or search.lower() in score_line['message'].lower()
 
 
 
