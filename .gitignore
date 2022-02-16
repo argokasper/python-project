@@ -3,3 +3,7 @@ __pycache__
 # tmp files
 log.*
 messages.csv
+
+# build dirs
+build
+dist

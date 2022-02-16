@@ -140,3 +140,14 @@ def parse_csv_line(line: str, delimiter: str, headers = [], retrieve_headers = F
             continue
 
     return tmp_data
+
+import os
+import sys
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)

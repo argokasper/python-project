@@ -1,13 +1,11 @@
-from tkinter import Frame, Canvas, Text
-# from tkinter import *
-from tkinter.ttk import Style, Entry, Label, Button, Scrollbar
+from tkinter import Frame
+from tkinter.ttk import Style, Entry, Label, Button
 
 from components.ScrollableFrame import ScrollableFrame # Impordime custom komponendi scrollview loomiseks
 
 class MainTab(Frame):
     pressed_keys = []
     scrollable_area = None
-    scrollable_canvas = None
 
     def __init__(self):
         super().__init__()
@@ -59,6 +57,3 @@ class MainTab(Frame):
             key_label.destroy()
 
         self.pressed_keys.clear()
-
-    def on_mousewheel(self, event):
-        self.scrollable_canvas.yview_scroll(-1*(event.delta), 'units')

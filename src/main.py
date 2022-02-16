@@ -4,6 +4,8 @@ from tkinter import Tk
 from tab_main import MainTab
 from tab_about import AboutTab
 
+import functions
+
 class App(Tk):
     def __init__(self):
         super().__init__()
@@ -11,7 +13,7 @@ class App(Tk):
         # Nüüd hakkame lisama aknale pealkirju ja ikoone
         # jm rakendust iseloomustavaid omadusi
         self.title('Minu Programm')
-        self.iconbitmap('./mario.ico') # pilt peab .ico formaadis
+        self.iconbitmap(functions.resource_path('ico/mario.ico')) # pilt peab .ico formaadis
         self.geometry('640x480')
 
         # Joonistame tab'ide grupi
